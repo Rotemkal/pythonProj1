@@ -6,10 +6,10 @@ class ShoppingCart:
         self.items = {}
 
     def add_item(self, item: Item):
-        if item in self.items: #  item name already exists in the shopping cart
-            raise errors.ItemAlreadyExistsError("Item {} already exists".format(str(item))
+        if item.name in self.items: #  name already exists in the shopping cart
+            raise errors.ItemAlreadyExistsError("Item {} already exists".format(str(item)))
         else:
-            self.items[item.name]= item # add item to shopping cart
+            self.items[item.name]= item  # add item to shopping cart
 
     def remove_item(self, item_name: str):
         if item_name not in self.items: # no item with the given name exists
@@ -18,5 +18,7 @@ class ShoppingCart:
             del self.items[item_name] # remove item from the shopping cart
 
     def get_subtotal(self) -> int:
-        # TODO: Complete
-        pass
+        sum = 0
+        for item in self.items.values():
+            sum+= item.price
+        return sum

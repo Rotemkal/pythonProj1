@@ -3,7 +3,8 @@ import errors
 
 class ShoppingCart:
     def __init__(self): #constructor
-        """initialize the shopping cart instance, a dictionary to store the current items in the shopping cart"""
+        """initialize the shopping cart instance,
+        a dictionary to store the current items in the shopping cart"""
         self.items = {}
 
     def add_item(self, item: Item):
@@ -11,13 +12,13 @@ class ShoppingCart:
         raises ItemAlreadyExistsError if item is already exist"""
         if item.name in self.items: #  name already exists in the shopping cart
             raise errors.ItemAlreadyExistsError(
-                "Item {} already exists".format(str(item)))
+                "Item {} already exists".format(item.name))
         else:
-            self.items[item.name]= item  # add item to shopping cart
+            self.items[item.name] = item  # add item to shopping cart
 
     def remove_item(self, item_name: str):
         """Removes an item from the shopping cart,
-                raises ItemNotExistError if item does not exist"""
+        raises ItemNotExistError if item does not exist"""
         if item_name not in self.items: # no item with the given name exists
             raise errors.ItemNotExistError(
                 "Item {} doesn't exist".format(item_name))

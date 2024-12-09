@@ -24,7 +24,7 @@ class Store:
     def search_by_name(self, item_name: str) -> list:
         searchlst = []
         for prod in self.get_items():
-            if item_name in prod.name:
+            if item_name in prod.name and item_name not in self._shopping_cart.items:
                 searchlst.append(prod)
         searchlst.sort(key=lambda prod : prod.name)
         return searchlst
@@ -44,3 +44,14 @@ class Store:
     def checkout(self) -> int:
         # TODO: Complete
         pass
+
+    def _sort_by_hashtag(self, items_list: list) -> list:
+        hashtag_list = []
+        for item in self._shopping_cart.items:
+            hashtag_list += item.hashtags
+        hash_dict = {}
+        for item in items_list:
+            hash_count = 0
+            for hashtag in hashtag_list:
+                if hashtag in item.hashtags:
+                    hash_count += 1

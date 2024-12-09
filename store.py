@@ -55,3 +55,9 @@ class Store:
             for hashtag in hashtag_list:
                 if hashtag in item.hashtags:
                     hash_count += 1
+        item_hash_lst = list(hash_dict.items()) # get list of tuples : (item,count)
+        item_hash_lst.sort(key=lambda item : item[1])
+        sort_lst = []
+        for item in item_hash_lst :
+            sort_lst.append(item[0])
+        return sort_lst

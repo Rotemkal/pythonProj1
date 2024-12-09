@@ -22,8 +22,12 @@ class Store:
         return self._items
 
     def search_by_name(self, item_name: str) -> list:
-        # TODO: Complete
-        pass
+        searchlst = []
+        for prod in self.get_items():
+            if item_name in prod.name:
+                searchlst.append(prod)
+        searchlst.sort(key=lambda prod : prod.name)
+        return searchlst
 
     def search_by_hashtag(self, hashtag: str) -> list:
         # TODO: Complete

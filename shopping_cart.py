@@ -27,7 +27,7 @@ class ShoppingCart:
 
     def get_subtotal(self) -> int:
         """Returns the subtotal of the items in the shopping cart"""
-        sum = 0
+        subtotal = 0
         for item in self.items.values():
-            sum+= item.price
-        return sum
+            subtotal += item.price
+        return subtotal

@@ -1,3 +1,5 @@
+from email.policy import default
+
 import yaml
 
 from item import Item
@@ -24,14 +26,18 @@ class Store:
     def search_by_name(self, item_name: str) -> list:
         searchlst = []
         for prod in self.get_items():
-            if item_name in prod.name and item_name not in self._shopping_cart.items:
+            if item_name in prod.name and prod.name not in self._shopping_cart.items:
                 searchlst.append(prod)
-        searchlst.sort(key=lambda prod : prod.name)
+        searchlst = self._sort_by_hashtag(searchlst)
         return searchlst
 
     def search_by_hashtag(self, hashtag: str) -> list:
-        # TODO: Complete
-        pass
+        searchlst = []
+        for prod in self.get_items():
+            if hashtag in prod.hashtags and prod.name not in self._shopping_cart.items:
+                searchlst.append(prod)
+        searchlst = self._sort_by_hashtag(searchlst)
+        return searchlst
 
     def add_item(self, item_name: str):
         # TODO: Complete
@@ -55,9 +61,11 @@ class Store:
             for hashtag in hashtag_list:
                 if hashtag in item.hashtags:
                     hash_count += 1
+            hash_dict[item] = hash_count
         item_hash_lst = list(hash_dict.items()) # get list of tuples : (item,count)
+        item_hash_lst.sort(key=lambda item: item[0].name) # handling equal counters' sorts by lexical order
         item_hash_lst.sort(key=lambda item : item[1])
         sort_lst = []
-        for item in item_hash_lst :
+        for item in item_hash_lst:
             sort_lst.append(item[0])
         return sort_lst

@@ -25,37 +25,49 @@ class Store:
         return self._items
 
     def search_by_name(self, item_name: str) -> list:
-        searchlst = []
-        for prod in self.get_items():
+        search_lst = []
+        for prod in self.get_items(): # building search_lst, adds relevant product
             if item_name in prod.name and prod.name not in self._shopping_cart.items:
-                searchlst.append(prod)
-        searchlst = self._sort_by_hashtag(searchlst)
-        return searchlst
+                search_lst.append(prod)
+        search_lst = self._sort_by_hashtag(search_lst) # sorts search_lst by using _sort_by_hashtag
+        return search_lst
 
     def search_by_hashtag(self, hashtag: str) -> list:
-        searchlst = []
-        for prod in self.get_items():
+        search_lst = []
+        for prod in self.get_items(): # building search_lst, adds relevant product
             if hashtag in prod.hashtags and prod.name not in self._shopping_cart.items:
-                searchlst.append(prod)
-        searchlst = self._sort_by_hashtag(searchlst)
-        return searchlst
+                search_lst.append(prod)
+        search_lst = self._sort_by_hashtag(search_lst) # sorts search_lst by using _sort_by_hashtag
+        return search_lst
 
     def add_item(self, item_name: str):
         count = 0
         for item in self._items: # checks how many items name matches item_name
             if item_name in item.name:
-                count +=1
-        if count == 1: # only one item matches' adds it to shopping cart,
+                count += 1
+                curr = item
+        if count == 1: # one item matches, adds it to shopping cart,
             # add_item raises ItemAlreadyExistsError if needed
-            self._shopping_cart.add_item(self._shopping_cart.items(item_name))
+            self._shopping_cart.add_item(curr)
         elif count > 1: # multiple items matching, raises TooManyMatchesError
             raise errors.TooManyMatchesError("There are multiple items matching the given name")
         else: # no such item exists
             raise errors.ItemNotExistError("There is no item with the given name")
 
     def remove_item(self, item_name: str):
-        # TODO: Complete
-        pass
+        count = 0
+        for item in self._items: # checks how many items name matches item_name
+            if item_name in item.name:
+                count += 1
+                curr = item # saving the item to add if relevant
+        if count == 1: # one item matches, adds it to shopping cart,
+            # remove_item raises ItemNotExistError if needed
+            self._shopping_cart.remove_item(curr)
+        elif count > 1: # multiple items matching, raises TooManyMatchesError
+            raise errors.TooManyMatchesError("There are multiple items matching the given name")
+        else: # no such item exists
+            raise errors.ItemNotExistError("There is no item with the given name")
+
 
     def checkout(self) -> int:
         # TODO: Complete

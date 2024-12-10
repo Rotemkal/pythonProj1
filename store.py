@@ -25,6 +25,10 @@ class Store:
         return self._items
 
     def search_by_name(self, item_name: str) -> list:
+        """Return value: a sorted list of all the items
+         that match the search term"""
+        if str == '':
+            return []
         search_lst = []
         for prod in self.get_items(): # building search_lst, adds relevant product
             if item_name in prod.name and prod.name not in self._shopping_cart.items:
@@ -33,6 +37,8 @@ class Store:
         return search_lst
 
     def search_by_hashtag(self, hashtag: str) -> list:
+        """Return a sorted list of all the items
+         matching the search criterion"""
         search_lst = []
         for prod in self.get_items(): # building search_lst, adds relevant product
             if hashtag in prod.hashtags and prod.name not in self._shopping_cart.items:
@@ -41,6 +47,9 @@ class Store:
         return search_lst
 
     def add_item(self, item_name: str):
+        """Adds an item with the given name to the customer’s shopping cart,
+        if no such item exists, raises ItemNotExistError, If the given item is
+        already in the shopping cart, raises ItemAlreadyExistsError"""
         count = 0
         for item in self._items: # checks how many items name matches item_name
             if item_name in item.name:
@@ -55,6 +64,9 @@ class Store:
             raise errors.ItemNotExistError("There is no item with the given name")
 
     def remove_item(self, item_name: str):
+        """Removes an item with the given name from the customer’s
+         shopping cart, if no such item exists, raises ItemNotExistError,
+         If there are multiple items matching the given name, raises TooManyMatchesError"""
         count = 0
         for item in self._items: # checks how many items name matches item_name
             if item_name in item.name:
@@ -70,8 +82,9 @@ class Store:
 
 
     def checkout(self) -> int:
-        # TODO: Complete
-        pass
+        """Returns the total price of all the items
+         in the costumer’s shopping cart"""
+        return self._shopping_cart.get_subtotal()
 
     def _sort_by_hashtag(self, items_list: list) -> list:
         hashtag_list = [] # building a new hash list
@@ -85,7 +98,7 @@ class Store:
                     hash_count += 1
             hash_dict[item] = hash_count # adding to dict
         item_hash_lst = list(hash_dict.items()) # get list of tuples : (item,count)
-        item_hash_lst.sort(key=lambda item: item[0].name) # first sort by names, handling equal counters
+        item_hash_lst.sort(key=lambda item : item[0].name) # first sort by names, handling equal counters
         item_hash_lst.sort(key=lambda item : item[1]) # sort by counts
         sort_lst = [] # building the sort list
         for item in item_hash_lst: # dict is sort, appends to list by order

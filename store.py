@@ -27,8 +27,6 @@ class Store:
     def search_by_name(self, item_name: str) -> list:
         """Return value: a sorted list of all the items
          that match the search term"""
-        if str == '':
-            return []
         search_lst = []
         for prod in self.get_items(): # building search_lst, adds relevant product
             if item_name in prod.name and prod.name not in self._shopping_cart.items:
@@ -51,6 +49,7 @@ class Store:
         if no such item exists, raises ItemNotExistError, If the given item is
         already in the shopping cart, raises ItemAlreadyExistsError"""
         count = 0
+        curr = None
         for item in self._items: # checks how many items name matches item_name
             if item_name in item.name:
                 count += 1
@@ -68,10 +67,11 @@ class Store:
          shopping cart, if no such item exists, raises ItemNotExistError,
          If there are multiple items matching the given name, raises TooManyMatchesError"""
         count = 0
+        curr = None
         for item in self._items: # checks how many items name matches item_name
             if item_name in item.name:
                 count += 1
-                curr = item # saving the item to add if relevant
+                curr = item.name # saving the item to add if relevant
         if count == 1: # one item matches, adds it to shopping cart,
             # remove_item raises ItemNotExistError if needed
             self._shopping_cart.remove_item(curr)
@@ -88,7 +88,7 @@ class Store:
 
     def _sort_by_hashtag(self, items_list: list) -> list:
         hashtag_list = [] # building a new hash list
-        for item in self._shopping_cart.items: # building list of all hashtags of all items in current shopping cart
+        for item in self._shopping_cart.items.values(): # building list of all hashtags of all items in current shopping cart
             hashtag_list += item.hashtags
         hash_dict = {} # dict for items and their num of matching to hashtag_list
         for item in items_list: # counting matches for each item

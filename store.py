@@ -53,7 +53,7 @@ class Store:
         for item in self._items: # checks how many items name matches item_name
             if item_name in item.name:
                 count += 1
-                curr = item
+                curr = item # saving the item that matches item_name
         if count == 1: # one item matches, adds it to shopping cart,
             # add_item raises ItemAlreadyExistsError if needed
             self._shopping_cart.add_item(curr)
@@ -99,7 +99,7 @@ class Store:
             hash_dict[item] = hash_count # adding to dict
         item_hash_lst = list(hash_dict.items()) # get list of tuples : (item,count)
         item_hash_lst.sort(key=lambda item : item[0].name) # first sort by names, handling equal counters
-        item_hash_lst.sort(key=lambda item : item[1]) # sort by counts
+        item_hash_lst.sort(key=lambda item : item[1], reverse=True) # sort by counts, bigger counts should come before lower ones
         sort_lst = [] # building the sort list
         for item in item_hash_lst: # dict is sort, appends to list by order
             sort_lst.append(item[0])

@@ -28,7 +28,7 @@ class Store:
         """Return value: a sorted list of all the items
          that match the search term"""
         search_lst = []
-        for prod in self.get_items(): # building search_lst, adds relevant product
+        for prod in self.get_items(): # adds products matching item_name and not in cart
             if item_name in prod.name and prod.name not in self._shopping_cart.items:
                 search_lst.append(prod)
         search_lst = self._sort_by_hashtag(search_lst) # sorts search_lst by using _sort_by_hashtag
@@ -38,7 +38,7 @@ class Store:
         """Return a sorted list of all the items
          matching the search criterion"""
         search_lst = []
-        for prod in self.get_items(): # building search_lst, adds relevant product
+        for prod in self.get_items(): # # adds products matching the hashtag and not in cart
             if hashtag in prod.hashtags and prod.name not in self._shopping_cart.items:
                 search_lst.append(prod)
         search_lst = self._sort_by_hashtag(search_lst) # sorts search_lst by using _sort_by_hashtag
@@ -88,7 +88,7 @@ class Store:
 
     def _sort_by_hashtag(self, items_list: list) -> list:
         hashtag_list = [] # building a new hash list
-        for item in self._shopping_cart.items.values(): # building list of all hashtags of all items in current shopping cart
+        for item in self._shopping_cart.items.values(): # adds each item's list of hashtags to hash_list
             hashtag_list += item.hashtags
         hash_dict = {} # dict for items and their num of matching to hashtag_list
         for item in items_list: # counting matches for each item
@@ -99,7 +99,7 @@ class Store:
             hash_dict[item] = hash_count # adding to dict
         item_hash_lst = list(hash_dict.items()) # get list of tuples : (item,count)
         item_hash_lst.sort(key=lambda item : item[0].name) # first sort by names, handling equal counters
-        item_hash_lst.sort(key=lambda item : item[1], reverse=True) # sort by counts, bigger counts should come before lower ones
+        item_hash_lst.sort(key=lambda item : item[1], reverse=True) # sort by counts in descending order
         sort_lst = [] # building the sort list
         for item in item_hash_lst: # dict is sort, appends to list by order
             sort_lst.append(item[0])
